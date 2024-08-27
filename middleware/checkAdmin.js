@@ -7,6 +7,7 @@ function checkAdmin(req, res, next) {
   }
 
   const token = req.cookies.token || headersToken;
+
   try {
     if (!token) {
       return res
@@ -15,6 +16,7 @@ function checkAdmin(req, res, next) {
     }
 
     const decode = jwt.verify(token, process.env.JWT_KEY);
+
     if (decode.role !== "admin") {
       return res
         .status(403)
@@ -23,6 +25,7 @@ function checkAdmin(req, res, next) {
     req.user = decode;
     next();
   } catch (error) {
+    // console.log("error", error);
     return res.status(500).json({
       message: "Internal Server Error",
       success: false,

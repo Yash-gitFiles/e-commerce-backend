@@ -15,11 +15,7 @@ function loginOrNot(req, res, next) {
     }
 
     const decode = jwt.verify(token, process.env.JWT_KEY);
-    // if (decode.role !== "admin") {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "You are not an admin", success: false });
-    // }
+
     req.user = decode;
     next();
   } catch (error) {
