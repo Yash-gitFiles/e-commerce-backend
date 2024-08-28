@@ -133,6 +133,16 @@ async function updateUser(req, res) {
     const { name, email, password } = req.body;
     const findUser = await User.findById(userId);
 
+    if (email) {
+      const checkEmail = await User.findOne({ email });
+      if (checkEmail) {
+        return res.status(300).json({
+          message: "User already exits",
+          success: false,
+        });
+      }
+    }
+
     if (!findUser) {
       return res.status(400).json({
         message: "User not found",

@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const cookieParser = require("cookie-parser");
 const adminAllUserRoutes = require("./routes/admin/adminAllUserDeatilRoute");
+const adminCategoryRoutes = require("./routes/admin/adminCategoryRoutes");
 
 // middle ware
 const app = express();
@@ -20,6 +21,7 @@ app.use("/admin", checkAdmin);
 app.use("/", commonRoute);
 
 app.use("/admin", adminAllUserRoutes);
+app.use("/admin/category", adminCategoryRoutes);
 
 app.listen(8000, () => {
   connectionToDB();

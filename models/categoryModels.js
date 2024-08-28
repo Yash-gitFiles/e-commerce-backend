@@ -5,7 +5,6 @@ const CategorySchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    enum: ["Men", "Women", "Kids"],
   },
   subCategory: [
     {
@@ -15,6 +14,6 @@ const CategorySchema = new mongoose.Schema({
   ],
 });
 
-const CategoryModels = mongoose.model("Category", CategorySchema);
+const CategoryModel = mongoose.model("Category", CategorySchema);
 
-module.exports = CategoryModels;
+module.exports = CategoryModel;

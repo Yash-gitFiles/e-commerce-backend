@@ -54,8 +54,6 @@ async function getUserDelete(req, res) {
   try {
     const checkUserOrNot = await User.findById(id);
 
-    console.log(checkUserOrNot);
-
     if (!checkUserOrNot) {
       return res
         .status(404)
@@ -76,8 +74,6 @@ async function getUserDelete(req, res) {
 async function getUserUpdate(req, res) {
   const { id } = req.params;
   const { name, email, password, role } = req.body;
-
- 
 
   try {
     const user = await User.findById(id);
