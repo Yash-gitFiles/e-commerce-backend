@@ -77,9 +77,10 @@ async function getUserUpdate(req, res) {
   const { id } = req.params;
   const { name, email, password, role } = req.body;
 
+ 
+
   try {
     const user = await User.findById(id);
-
     if (!user) {
       return res
         .status(404)
@@ -89,7 +90,10 @@ async function getUserUpdate(req, res) {
     const updates = {};
     if (name) updates.name = name;
     if (email) updates.email = email;
-    if (password) updates.password = await bcrypt.hash(password, 10);
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updates.password = await bcrypt.hash(password, salt);
+    }
     if (role) updates.role = role;
 
     const updatedUser = await User.findByIdAndUpdate(id, updates, {

@@ -14,7 +14,8 @@ async function signUp(req, res) {
         .json({ message: "User already exists", success: false });
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
     const roleCount = await User.countDocuments({});
     const role = roleCount === 0 ? "admin" : "user";
 
@@ -45,12 +46,14 @@ async function login(req, res) {
 
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
       return res
         .status(404)
         .json({ message: "User Not Found", success: false });
     }
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(404).json({
         message: "Invalid Password",
