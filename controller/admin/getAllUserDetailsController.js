@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 async function getAllUserDetails(_, res) {
   try {
-    const users = await User.find({ role: "user" });
+    const users = await User.find();
     if (!users) {
       return res
         .status(404)
@@ -19,6 +19,34 @@ async function getAllUserDetails(_, res) {
     res.status(500).json({ message: "Error retrieving users", success: false });
   }
 }
+
+// async function getAllUserDetails(req, res) {
+//   try {
+//     const loggedInUser = req.user;
+
+//     console.log(loggedInUser);
+
+//     if (!loggedInUser) {
+//       return res.status(401).json({ message: "Unauthorized", success: false });
+//     }
+
+//     let users;
+//     if (loggedInUser.role !== "admin") {
+//       users = await User.find();
+//     } else {
+//       users = await User.find({ role: { $ne: "admin" } });
+//     }
+
+//     res.status(200).json({
+//       message: "Users retrieved successfully",
+//       users,
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error retrieving users", success: false });
+//   }
+// }
 
 async function getUserDelete(req, res) {
   const id = req.params.id;

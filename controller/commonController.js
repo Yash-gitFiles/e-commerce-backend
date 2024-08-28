@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModels");
 const jwt = require("jsonwebtoken");
-const { clearCookie } = require("cookie-parser");
 
 async function signUp(req, res) {
   const { name, email, password } = req.body;
@@ -124,9 +123,50 @@ async function getUserDetails(req, res) {
   }
 }
 
+async function updateUser(req, res) {
+  const userId = req.user.id;
+
+  try {
+    const { name, email, password } = req.body;
+    const findUser = await User.findById(userId);
+
+    if (!findUser) {
+      return res.status(400).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const updateUser = {
+      name: name || findUser.name,
+      email: email || findUser.email,
+      password: hashPassword || findUser.password,
+    };
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateUser, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+}
+
 module.exports = {
   signUp,
   login,
   logout,
   getUserDetails,
+  updateUser,
 };
