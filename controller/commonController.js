@@ -3,7 +3,7 @@ const User = require("../models/userModels");
 const jwt = require("jsonwebtoken");
 
 async function signUp(req, res) {
-  const { name, email, password } = req.body;
+  const { name, email, password, userImage } = req.body;
 
   try {
     const userExitsOrNot = await User.findOne({ email });
@@ -24,8 +24,7 @@ async function signUp(req, res) {
       email,
       password: hashPassword,
       role,
-      userImage:
-        "https://images.unsplash.com/photo-1719937206098-236a481a2b6d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      userImage,
     });
 
     newUser.save();
@@ -35,6 +34,7 @@ async function signUp(req, res) {
       success: true,
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ message: "Internal server error", success: false });

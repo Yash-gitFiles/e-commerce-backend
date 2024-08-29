@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const subcategorySchema = new mongoose.Schema({
-  name: {
+  subCategoryName: {
     type: String,
     required: true,
   },

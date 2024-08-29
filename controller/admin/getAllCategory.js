@@ -2,21 +2,28 @@ const CategoryModel = require("../../models/categoryModels");
 
 async function createCategory(req, res) {
   const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({
+      message: "Category name is required",
+      success: false,
+    });
+  }
+
   try {
-    const categoryExistOrNot = await CategoryModel.findOne({ name });
+    const categoryExistOrNot = await CategoryModel.findOne({
+      name: { $regex: new RegExp(`^${name}$`, "i") },
+    });
 
     if (categoryExistOrNot) {
       return res.status(400).json({
-        message: "Category already exist",
+        message: "Category already exists",
         success: false,
       });
     }
 
-    const newCategory = await new CategoryModel({
-      name,
-    });
-
-    newCategory.save();
+    const newCategory = new CategoryModel({ name });
+    await newCategory.save();
 
     return res.status(200).json({
       message: "Category created successfully",
@@ -24,6 +31,7 @@ async function createCategory(req, res) {
       newCategory,
     });
   } catch (error) {
+    console.error("Error creating category:", error);
     return res.status(500).json({
       message: "Internal server error",
       success: false,
@@ -65,9 +73,22 @@ async function updateCategory(req, res) {
   try {
     const findCategory = await CategoryModel.findById(id);
 
+    console.log(findCategory);
+
     if (!findCategory) {
       return res.status(400).json({
         message: "Category not found",
+        success: false,
+      });
+    }
+
+    const categoryExistOrNot = await CategoryModel.findOne({
+      name: { $regex: new RegExp(`^${name}$`, "i") },
+    });
+
+    if (categoryExistOrNot) {
+      return res.status(400).json({
+        message: "Category already exist",
         success: false,
       });
     }
