@@ -27,7 +27,7 @@ function checkAdmin(req, res, next) {
   } catch (error) {
     // console.log("error", error);
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: "Internal Server Error middle ware error",
       success: false,
     });
   }

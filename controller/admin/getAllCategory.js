@@ -73,8 +73,6 @@ async function updateCategory(req, res) {
   try {
     const findCategory = await CategoryModel.findById(id);
 
-    console.log(findCategory);
-
     if (!findCategory) {
       return res.status(400).json({
         message: "Category not found",
