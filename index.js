@@ -19,9 +19,9 @@ const { checkAdmin } = require("./middleware/checkAdmin");
 
 // check admin
 app.use("/admin", checkAdmin);
+
 // routes
 app.use("/", commonRoute);
-
 app.use("/admin", adminAllUserRoutes);
 app.use("/admin/category", adminCategoryRoutes);
 app.use("/admin/subCategory", adminSubCategoryRoutes);

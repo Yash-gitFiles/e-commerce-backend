@@ -77,6 +77,11 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
+  stock: {
+    type: Number,
+    require: true,
+    min: 0,
+  },
 });
 
 const ProductModel = mongoose.model("Product", ProductSchema);
